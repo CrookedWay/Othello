@@ -15,8 +15,8 @@ myColor = None
 opponentColor = None
 
 
-startBoard = Board("startBoard")
-startBoard.initalizeBoard()
+gameBoard = Board("gameBoard")
+gameBoard.initalizeBoard()
 
 #Game Begins.
 colorChoice = input()
@@ -39,12 +39,14 @@ while gameOver != True:
         else:
             column = int(alphaNumeric[currentAction[2]])
             row = int(currentAction[4])
-            startBoard.takeMove(column, row, opponentColor)
+            gameBoard.takeMove(column, row, opponentColor)
         if trace == True:
-            startBoard.prettyPrintBoard()
+            gameBoard.prettyPrintBoard()
+        myTurn = True
     if myTurn == True:
-# nextMove = Move("NextMove")
-# nextMove.moveList(startBoard, '1')
+        nextMove = Move("NextMove", myColor, opponentColor)
+        nextMove.moveList(gameBoard)
+        myTurn = False
 
 
 
