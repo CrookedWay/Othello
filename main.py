@@ -45,8 +45,12 @@ while gameOver != True:
         myTurn = True
     if myTurn == True:
         nextMove = Move("NextMove", myColor, opponentColor)
-        nextMove.moveList(gameBoard)
-        myTurn = False
+        moveList = nextMove.moveList(gameBoard)
+        gameBoard.takeMove(int(moveList[0][0]), int(moveList[0][1]), myColor)
+        gameBoard.prettyPrintBoard()
+        myTurn=False
+
+
 
 
 

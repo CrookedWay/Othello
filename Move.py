@@ -3,55 +3,81 @@ from itertools import product
 
 
 class Move:
+    def __init__(self, name, color, enemyColor):
+        boardDict = {'w': 1, 'b': 2}
+        self.possibleMoves = []
+        self.color = boardDict[color]
+        self.enemyColor = boardDict[enemyColor]
 
-    def __init__(self, name):
-        self.name = name
-        self.possibleMoves = list
-
-    def checkLeft(self, gameBoard, x, y, color):
-        for x in range(x, 0, -1):
-            if gameBoard[x][y] != 0:
+    def checkWest(self, gameBoard, x, y):
+        for check in range(x, 0, -1):
+            if gameBoard[check][y] != 0:
                 continue
-            if gameBoard[x][y] == 0 and gameBoard[x-1][y] != color:
-                print("left" + str(x+1) + str(y+1))
-                return x + 1, y + 1
+            if gameBoard[check][y] == 0 and gameBoard[check + 1][y] == self.enemyColor:
+                self.possibleMoves.append([x, y, check + 1, y + 1, 'W'])
 
-    def checkRight(self, gameBoard,  x, y, color):
-        previousMoveColor = 0
-        for x in range(x, 8):
-            if gameBoard[x][y] != 0:
+    def checkEast(self, gameBoard, x, y):
+        for check in range(x, 8):
+            if gameBoard[check][y] != 0:
                 continue
-            if gameBoard[x][y] == 0 and previousMoveColor != color:
-                print("right" + str(x+1) + str(y+1))
-                return x + 1, y + 1
+            if gameBoard[check][y] == 0 and gameBoard[check - 1][y] == self.enemyColor:
+                self.possibleMoves.append([x,y,check + 1, y + 1, 'E'])
 
-    def checkUp(self, gameBoard, x, y, color):
-        previousMoveColor = 0
-        for y in range(y, 0, -1):
-            if gameBoard[x][y] != 0:
-                previousMoveColor = gameBoard[x][y]
-            if gameBoard[x][y] == 0 and previousMoveColor != color:
-                print("up" + str(x+1) + str(y+1) )
-                return x+1, y+1
+    def checkNorth(self, gameBoard, x, y):
+        for check in range(y, 0, -1):
+            if gameBoard[x][check] != 0:
+                continue
+            if gameBoard[x][check] == 0 and gameBoard[x][check + 1] == self.enemyColor:
+                self.possibleMoves.append([x, y, x + 1, check + 1, 'N'])
 
+    def checkSouth(self, gameBoard, x, y):
+        for check in range(y, 8):
+            if gameBoard[x][check] != 0:
+                continue
+            if gameBoard[x][check] == 0 and gameBoard[x][check - 1] == self.enemyColor:
+                self.possibleMoves.append([x, y, x + 1, check + 1, 'S'])
 
-    def checkDown(self, gameBoard, x, y, color):
-        previousMoveColor = 0
-        for y in range(y, 8):
-            if gameBoard[x][y] != 0:
-                previousMoveColor = gameBoard[x][y]
-            if gameBoard[x][y] == 0 and previousMoveColor != color:
-                print("down" + str(x+1) + str(y+1))
-                return x + 1, y + 1
+    def checkNE(self, gameBoard, x, y):
+        for check_x, check_y in zip(range(x, 8), range(y, 0, -1)):
+            if gameBoard[check_x][check_y] != 0:
+                continue
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y + 1] == self.enemyColor:
+                self.possibleMoves.append([x, y, check_x + 1, check_y + 1, 'NE'])
 
-    def moveList(self, gameBoard, color):
+    def checkSE(self, gameBoard, x, y):
+        for check_x, check_y in zip(range(x, 8), range(y, 8)):
+            if gameBoard[check_x][check_y] != 0:
+                continue
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y - 1] == self.enemyColor:
+                self.possibleMoves.append([x, y, check_x + 1, check_y + 1, 'SE'])
+
+    def checkSW(self, gameBoard, x, y):
+        for check_x, check_y in zip(range(x, 0, -1), range(y, 8)):
+            if gameBoard[check_x][check_y] != 0:
+                continue
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y - 1] == self.enemyColor:
+                self.possibleMoves.append([x, y, check_x + 1, check_y + 1, 'SW'])
+
+    def checkNW(self, gameBoard, x, y):
+        for check_x, check_y in zip(range(x, 0, -1), range(y, 0, -1)):
+            if gameBoard[check_x][check_y] != 0:
+                continue
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y + 1] == self.enemyColor:
+                self.possibleMoves.append([x, y, check_x + 1, check_y + 1, 'NW'])
+
+    def moveList(self, gameBoard):
         gameDict = gameBoard.gameBoard
-        interiorMoves = []
         for x in range(8):
             for y in range(8):
-                if gameDict[x][y] != 0:
-                    interiorMoves.append(self.checkLeft(gameDict, x, y, color))
-                    interiorMoves.append(self.checkRight(gameDict, x, y, color))
-                    interiorMoves.append(self.checkUp(gameDict, x, y, color))
-                    interiorMoves.append(self.checkDown(gameDict, x, y, color))
-        for x in range(8): print(interiorMoves[x])
+                if gameDict[x][y] == self.color:
+                    self.checkWest(gameDict, x, y)
+                    self.checkEast(gameDict, x, y)
+                    self.checkNorth(gameDict, x, y)
+                    self.checkSouth(gameDict, x, y)
+                    self.checkNE(gameDict, x, y)
+                    self.checkSE(gameDict, x, y)
+                    self.checkSW(gameDict, x, y)
+                    self.checkNW(gameDict, x, y)
+        return self.possibleMoves
+
+

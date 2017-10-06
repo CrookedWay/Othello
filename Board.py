@@ -53,6 +53,13 @@ class Board:
                 blackCounter+=1
         return blackCounter
 
+    def updateBoardSelf(self, moveList, color):
+        boardDict = {'w': 1, 'b': 2}
+        colorActual = boardDict[color]
+
+
+
+
 
 
 
