@@ -1,19 +1,19 @@
-import asyncio
-import argparse
-
 from Board import *
 from Move import *
+from Flip import *
 
-trace = False
+trace = True
 
 gameOver = False
 
 alphaNumeric = {'a':1, 'b':2, 'c':3, 'd':4, 'e':5, 'f':6, 'g':7, 'h':8}
 
 myTurn = False
-myColor = None
-opponentColor = None
 
+global myColor
+global myNum
+global opponentColor
+global opponentNum
 
 gameBoard = Board("gameBoard")
 gameBoard.initalizeBoard()
@@ -21,13 +21,20 @@ gameBoard.initalizeBoard()
 #Game Begins.
 colorChoice = input()
 if colorChoice == "I W":
-    myColor = "w"
-    opponentColor = "b"
+    myColor = "W"
+    opponentColor = "B"
+    myNum = 1
+    opponentNum = 2
     print("R W")
+    myTurn = False
+
 if colorChoice == "I B":
-    myColor = "b"
-    opponentColor = "w"
+    myColor = "B"
+    opponentColor = "W"
+    myNum = 2
+    opponentNum = 1
     print("R B")
+    myTurn = True
 
 while gameOver != True:
     if myTurn == False:
@@ -37,17 +44,22 @@ while gameOver != True:
         elif currentAction[0] == "n":
             gameOver = True
         else:
-            column = int(alphaNumeric[currentAction[2]])
-            row = int(currentAction[4])
-            gameBoard.takeMove(column, row, opponentColor)
-        if trace == True:
-            gameBoard.prettyPrintBoard()
+            column = currentAction[2]
+            row = currentAction[4]
+            gameBoard.takeMove(column, row, opponentNum)
+            takeFlip(gameBoard, opponentNum, column, row)
         myTurn = True
     if myTurn == True:
-        nextMove = Move("NextMove", myColor, opponentColor)
+        nextMove = Move("NextMove", myNum, opponentNum)
         moveList = nextMove.moveList(gameBoard)
-        gameBoard.takeMove(int(moveList[0][0]), int(moveList[0][1]), myColor)
-        gameBoard.prettyPrintBoard()
+        #Forgive me.
+        for move in range(len(moveList)):
+            if gameBoard.gameBoard[moveList[move][1]][moveList[move][0]] == 0:
+                gameBoard.playMove(moveList[move][0], moveList[move][1], myNum)
+                gameBoard.broadcastMove(moveList[move][0], moveList[move][1], myColor)
+                selfFlip(gameBoard, myNum, moveList[move][0], moveList[move][1])
+                break
+        nextMove.emptyMoves()
         myTurn=False
 
 
