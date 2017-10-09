@@ -53,7 +53,6 @@ class Board:
     def playMove(self, x_actual, y_actual, number):
         x = int(x_actual)
         y = int(y_actual)
-        print(x, y)
         self.gameBoard[y][x] = number
 
     def broadcastMove(self, x, y, color):

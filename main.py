@@ -2,9 +2,10 @@ from Board import *
 from Move import *
 from Flip import *
 
+import time
 
 
-trace = True
+trace = False
 gameOver = False
 myTurn = False
 
@@ -41,6 +42,7 @@ while not gameOver:
         if len(currentAction) == 1 and currentAction[0] != "n":
                 print("Pass")
         elif currentAction[0] == "n":
+            print(gameBoard.countBlack())
             gameOver = True
         else:
             column = currentAction[2]
@@ -56,6 +58,9 @@ while not gameOver:
         if trace:
             nextMove.printMoves()
         #Forgive me.
+        startTime = time.time()
+        if len(moveList) == 0:
+            print(myColor)
         for move in range(len(moveList)):
             if gameBoard.gameBoard[moveList[move][1]][moveList[move][0]] == 0:
                 gameBoard.playMove(moveList[move][0], moveList[move][1], myNum)

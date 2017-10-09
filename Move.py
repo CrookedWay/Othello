@@ -13,8 +13,6 @@ class Move:
             if gameBoard[check][y] == self.color and check != x:
                 break
             if gameBoard[check][y] == 0 and gameBoard[check + 1][y] == self.enemyColor and anchor==True:
-                print(x, y)
-                print("West")
                 self.possibleMoves.append([check, y])
             if gameBoard[check][y] == self.enemyColor:
                 anchor = True
@@ -26,8 +24,6 @@ class Move:
             if gameBoard[check][y] == self.color and check != x:
                 break
             if gameBoard[check][y] == 0 and gameBoard[check - 1][y] == self.enemyColor and anchor==True:
-                print(x, y)
-                print("East")
                 self.possibleMoves.append([check, y])
             if gameBoard[check][y] == self.enemyColor:
                 anchor = True
@@ -40,8 +36,6 @@ class Move:
             if gameBoard[x][check] == self.color and check != y:
                 break
             if gameBoard[x][check] == 0 and gameBoard[x][check + 1] == self.enemyColor and anchor==True:
-                print(x, y)
-                print("North")
                 self.possibleMoves.append([x, check])
             if gameBoard[x][check] == 0:
                 break
@@ -56,8 +50,6 @@ class Move:
             if gameBoard[x][check] == self.color and check != y:
                 break
             if gameBoard[x][check] == 0 and gameBoard[x][check - 1] == self.enemyColor and anchor==True:
-                print(x, y)
-                print("South")
                 self.possibleMoves.append([x, check])
             if gameBoard[x][check] == 0:
                 break
@@ -71,8 +63,6 @@ class Move:
             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
                 break
             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y + 1] == self.enemyColor and anchor==True:
-                print(x, y)
-                print("NE")
                 self.possibleMoves.append([check_x, check_y])
             if gameBoard[check_x][check_y] == 0:
                 break
@@ -87,8 +77,6 @@ class Move:
             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
                 break
             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y - 1] == self.enemyColor and anchor==True:
-                print(x, y)
-                print("SE")
                 self.possibleMoves.append([check_x, check_y])
             if gameBoard[check_x][check_y] == 0:
                 break
@@ -102,8 +90,6 @@ class Move:
             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
                 break
             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y - 1] == self.enemyColor and anchor==True :
-                print(x, y)
-                print("SW")
                 self.possibleMoves.append([check_x, check_y])
             if gameBoard[check_x][check_y] == 0:
                 break
@@ -119,8 +105,6 @@ class Move:
             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
                 break
             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y + 1] == self.enemyColor and anchor == True:
-                print(x, y)
-                print("NW")
                 self.possibleMoves.append([check_x, check_y])
             if gameBoard[check_x][check_y] == 0:
                 break
@@ -141,6 +125,8 @@ class Move:
                     self.checkSE(gameDict, x, y)
                     self.checkSW(gameDict, x, y)
                     self.checkNW(gameDict, x, y)
+        for z in self.possibleMoves:
+            self.hook(gameDict, z)
         return self.possibleMoves
 
     def printMoves(self):
@@ -156,6 +142,11 @@ class Move:
     def emptyMoves(self):
         del self.possibleMoves[:]
 
+
+    def hook(self, gameBoard, move):
+        x, y = move
+        if gameBoard[x+1][y] == 0 and gameBoard[x-1][y] == 0 and gameBoard[x][y+1] == 0 and gameBoard[x][y-1] == 0 and gameBoard[x+1][y+1] == 0 and gameBoard[x -1][y-1] == 0 and gameBoard[x+1][y-1] == 0 and gameBoard[x-1][y+1] == 0:
+            self.possibleMoves.remove(move)
 
         # class Move:
         #     def __init__(self, name, color, enemyColor):
