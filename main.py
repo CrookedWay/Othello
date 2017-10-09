@@ -2,6 +2,8 @@ from Board import *
 from Move import *
 from Flip import *
 
+
+
 trace = True
 gameOver = False
 myTurn = False
