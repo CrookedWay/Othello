@@ -5,8 +5,8 @@ from itertools import product
 class Board:
     boardDict = {0: '-', 1: "W", 2: 'B'}
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
+        # self.name = name
         self.gameBoard = defaultdict(defaultdict)
 
     def __getitem__(self, row, column):
