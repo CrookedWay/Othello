@@ -1,3 +1,7 @@
+from itertools import product
+
+import numpy as np
+
 class Move:
 
     trace = True
@@ -7,110 +11,193 @@ class Move:
         self.color = color
         self.enemyColor = enemyColor
 
+
     def checkWest(self, gameBoard, x, y):
-        anchor = False
         for check in range(x, 0, -1):
-            if gameBoard[check][y] == self.color and check != x:
-                break
-            if gameBoard[check][y] == 0 and gameBoard[check + 1][y] == self.enemyColor and anchor==True:
-                self.possibleMoves.append([check, y])
-            if gameBoard[check][y] == self.enemyColor:
-                anchor = True
+            if gameBoard[check][y] != 0:
                 continue
+            if gameBoard[check][y] == 0 and gameBoard[check+1][y] == 0:
+                break
+            if gameBoard[check][y] == 0 and gameBoard[check + 1][y] == self.enemyColor:
+                self.possibleMoves.append([check, y, "CheckWest"])
 
     def checkEast(self, gameBoard, x, y):
-        anchor = False
-        for check in range(x, 7):
-            if gameBoard[check][y] == self.color and check != x:
-                break
-            if gameBoard[check][y] == 0 and gameBoard[check - 1][y] == self.enemyColor and anchor==True:
-                self.possibleMoves.append([check, y])
-            if gameBoard[check][y] == self.enemyColor:
-                anchor = True
+        for check in range(x, 8):
+            if gameBoard[check][y] != 0:
                 continue
-
+            if gameBoard[check][y] == 0 and gameBoard[check-1][y] == 0:
+                break
+            if gameBoard[check][y] == 0 and gameBoard[check - 1][y] == self.enemyColor:
+                self.possibleMoves.append([check, y, "CheckEast"])
 
     def checkNorth(self, gameBoard, x, y):
-        anchor = False
         for check in range(y, 0, -1):
-            if gameBoard[x][check] == self.color and check != y:
-                break
-            if gameBoard[x][check] == 0 and gameBoard[x][check + 1] == self.enemyColor and anchor==True:
-                self.possibleMoves.append([x, check])
-            if gameBoard[x][check] == 0:
-                break
-            if gameBoard[x][check] == self.enemyColor:
-                anchor = True
+            if gameBoard[x][check] != 0:
                 continue
-
+            if gameBoard[x][check] == 0 and gameBoard[x][check +1] == 0:
+                break
+            if gameBoard[x][check] == 0 and gameBoard[x][check + 1] == self.enemyColor:
+                self.possibleMoves.append([x, check, "CheckNorth"])
 
     def checkSouth(self, gameBoard, x, y):
-        anchor = False
-        for check in range(y, 7):
-            if gameBoard[x][check] == self.color and check != y:
-                break
-            if gameBoard[x][check] == 0 and gameBoard[x][check - 1] == self.enemyColor and anchor==True:
-                self.possibleMoves.append([x, check])
-            if gameBoard[x][check] == 0:
-                break
-            if gameBoard[x][check] == self.enemyColor:
-                anchor=True
+        for check in range(y, 8):
+            if gameBoard[x][check] != 0:
                 continue
+            if gameBoard[x][check] == 0 and gameBoard[x][check -1] == 0:
+                break
+            if gameBoard[x][check] == 0 and gameBoard[x][check - 1] == self.enemyColor:
+                self.possibleMoves.append([x, check, "CheckSouth"])
 
     def checkNE(self, gameBoard, x, y):
-        anchor = False
-        for check_x, check_y in zip(range(x, 7), range(y, 0, -1)):
-            if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
-                break
-            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y + 1] == self.enemyColor and anchor==True:
-                self.possibleMoves.append([check_x, check_y])
-            if gameBoard[check_x][check_y] == 0:
-                break
-            if gameBoard[check_x][check_y] == self.enemyColor:
-                anchor = True
+        for check_x, check_y in product(range(x-1, 8), range(y, 0, -1)):
+            if gameBoard[check_x][check_y] != 0:
                 continue
-
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x-1][check_y+1] == 0:
+                break
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y + 1] == self.enemyColor:
+                self.possibleMoves.append([check_x, check_y, "CheckNE"])
 
     def checkSE(self, gameBoard, x, y):
-        anchor = False
-        for check_x, check_y in zip(range(x, 7), range(y, 7)):
-            if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
-                break
-            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y - 1] == self.enemyColor and anchor==True:
-                self.possibleMoves.append([check_x, check_y])
-            if gameBoard[check_x][check_y] == 0:
-                break
-            if gameBoard[check_x][check_y] == self.enemyColor:
-                anchor = True
+        for check_x, check_y in product(range(x-1, 8), range(y-1, 8)):
+            if gameBoard[check_x][check_y] != 0:
                 continue
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x-1][check_y-1] == 0:
+                break
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y - 1] == self.enemyColor:
+                self.possibleMoves.append([check_x, check_y, "CheckSE"])
 
     def checkSW(self, gameBoard, x, y):
-        for check_x, check_y in zip(range(x, 0, -1), range(y, 7)):
-            anchor = False
-            if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
-                break
-            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y - 1] == self.enemyColor and anchor==True :
-                self.possibleMoves.append([check_x, check_y])
-            if gameBoard[check_x][check_y] == 0:
-                break
-            if gameBoard[check_x][check_y] == self.enemyColor:
-                anchor = True
+        for check_x, check_y in product(range(x, 0, -1), range(y-1, 8)):
+            if gameBoard[check_x][check_y] != 0:
                 continue
-
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x+1][check_y+1] == 0:
+                break
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y - 1] == self.enemyColor:
+                self.possibleMoves.append([check_x, check_y, "CheckSW"])
 
     def checkNW(self, gameBoard, x, y):
-        anchor = False
-        for check_x, check_y in zip(range(x, 0, -1), range(y, 0, -1)):
-            anchor = False
-            if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
-                break
-            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y + 1] == self.enemyColor and anchor == True:
-                self.possibleMoves.append([check_x, check_y])
-            if gameBoard[check_x][check_y] == 0:
-                break
-            if gameBoard[check_x][check_y] == self.enemyColor:
-                anchor = True
+        for check_x, check_y in product(range(x, 0, -1), range(y, 0, -1)):
+            if gameBoard[check_x][check_y] != 0:
                 continue
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x+1][check_y+1] == 0:
+                break
+            if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y + 1] == self.enemyColor:
+                self.possibleMoves.append([check_x, check_y, "CheckNW"])
+
+
+
+# class Move:
+#
+#     trace = True
+#
+#     def __init__(self, color, enemyColor):
+#         self.possibleMoves = []
+#         self.color = color
+#         self.enemyColor = enemyColor
+#
+#     def checkWest(self, gameBoard, x, y):
+#         anchor = False
+#         for check in range(x, 0, -1):
+#             if gameBoard[check][y] == self.color and check != x:
+#                 break
+#             if gameBoard[check][y] == 0 and gameBoard[check + 1][y] == self.enemyColor and anchor==True:
+#                 self.possibleMoves.append([check, y, "CheckWest"])
+#             if gameBoard[check][y] == self.enemyColor:
+#                 anchor = True
+#                 continue
+#
+#     def checkEast(self, gameBoard, x, y):
+#         anchor = False
+#         for check in range(x, 7):
+#             if gameBoard[check][y] == self.color and check != x:
+#                 break
+#             if gameBoard[check][y] == 0 and gameBoard[check - 1][y] == self.enemyColor and anchor==True:
+#                 self.possibleMoves.append([check, y, "CheckEast"])
+#             if gameBoard[check][y] == self.enemyColor:
+#                 anchor = True
+#                 continue
+#
+#
+#     def checkNorth(self, gameBoard, x, y):
+#         anchor = False
+#         for check in range(y, 0, -1):
+#             if gameBoard[x][check] == self.color and check != y:
+#                 break
+#             if gameBoard[x][check] == 0 and gameBoard[x][check + 1] == self.enemyColor and anchor==True:
+#                 self.possibleMoves.append([x, check, "CheckNorth"])
+#             if gameBoard[x][check] == 0:
+#                 break
+#             if gameBoard[x][check] == self.enemyColor:
+#                 anchor = True
+#                 continue
+#
+#
+#     def checkSouth(self, gameBoard, x, y):
+#         anchor = False
+#         for check in range(y, 7):
+#             if gameBoard[x][check] == self.color and check != y:
+#                 break
+#             if gameBoard[x][check] == 0 and gameBoard[x][check - 1] == self.enemyColor and anchor==True:
+#                 self.possibleMoves.append([x, check, "CheckSouth"])
+#             if gameBoard[x][check] == 0:
+#                 break
+#             if gameBoard[x][check] == self.enemyColor:
+#                 anchor=True
+#                 continue
+#
+#     def checkNE(self, gameBoard, x, y):
+#         anchor = False
+#         for check_x, check_y in product(range(x, 7), range(y, 0, -1)):
+#             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
+#                 break
+#             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y + 1] == self.enemyColor and anchor==True:
+#                 self.possibleMoves.append([check_x, check_y, "CheckNE"])
+#             if gameBoard[check_x][check_y] == 0:
+#                 break
+#             if gameBoard[check_x][check_y] == self.enemyColor:
+#                 anchor = True
+#                 continue
+#
+#
+#     def checkSE(self, gameBoard, x, y):
+#         anchor = False
+#         for check_x, check_y in product(range(x, 7), range(y, 7)):
+#             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
+#                 break
+#             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x - 1][check_y - 1] == self.enemyColor and anchor==True:
+#                 self.possibleMoves.append([check_x, check_y, "CheckSE"])
+#             if gameBoard[check_x][check_y] == 0:
+#                 break
+#             if gameBoard[check_x][check_y] == self.enemyColor:
+#                 anchor = True
+#                 continue
+#
+#     def checkSW(self, gameBoard, x, y):
+#         for check_x, check_y in product(range(x, 0, -1), range(y, 7)):
+#             anchor = False
+#             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
+#                 break
+#             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y - 1] == self.enemyColor and anchor==True :
+#                 self.possibleMoves.append([check_x, check_y, "CheckSW"])
+#             if gameBoard[check_x][check_y] == 0:
+#                 break
+#             if gameBoard[check_x][check_y] == self.enemyColor:
+#                 anchor = True
+#                 continue
+#
+#
+#     def checkNW(self, gameBoard, x, y):
+#         for check_x, check_y in product(range(x, 0, -1), range(y, 0, -1)):
+#             anchor = False
+#             if gameBoard[check_x][check_y] == self.color and check_x != x and check_y != y:
+#                 break
+#             if gameBoard[check_x][check_y] == 0 and gameBoard[check_x + 1][check_y + 1] == self.enemyColor and anchor == True:
+#                 self.possibleMoves.append([check_x, check_y, "CheckNW"])
+#             if gameBoard[check_x][check_y] == 0:
+#                 break
+#             if gameBoard[check_x][check_y] == self.enemyColor:
+#                 anchor = True
+#                 continue
 
     def moveList(self, gameBoard):
         gameDict = gameBoard.gameBoard
@@ -144,7 +231,7 @@ class Move:
 
 
     def hook(self, gameBoard, move):
-        x, y = move
+        x, y, z = move
         if gameBoard[x+1][y] == 0 and gameBoard[x-1][y] == 0 and gameBoard[x][y+1] == 0 and gameBoard[x][y-1] == 0 and gameBoard[x+1][y+1] == 0 and gameBoard[x -1][y-1] == 0 and gameBoard[x+1][y-1] == 0 and gameBoard[x-1][y+1] == 0:
             self.possibleMoves.remove(move)
 

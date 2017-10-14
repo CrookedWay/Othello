@@ -5,7 +5,7 @@ from Flip import *
 import time
 
 
-trace = False
+trace = True
 gameOver = False
 myTurn = False
 

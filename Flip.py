@@ -1,3 +1,7 @@
+from itertools import product
+
+import numpy as np
+
 def inverse(myNum):
     if myNum == 1:
         return 2

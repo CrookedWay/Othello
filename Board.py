@@ -1,9 +1,9 @@
 from collections import defaultdict
 from itertools import product
 
+import numpy as np
 
 class Board:
-    boardDict = {0: '-', 1: "W", 2: 'B'}
 
     def __init__(self):
         # self.name = name
@@ -45,8 +45,8 @@ class Board:
                     print(str(x) + " " + nullStr)
 
     def takeMove(self, x, y, number):
-        alphaNumeric = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8}
-        x = alphaNumeric[x]-1
+        alphaNumeric = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
+        x = alphaNumeric[x]
         y = int(y)-1
         self.gameBoard[y][x] = number
 
@@ -62,7 +62,10 @@ class Board:
 
     def countBlack(self):
         blackCounter = 0
+        whiteCounter = 0
         for x, y in product(range(8), range(8)):
+            if self.gameBoard[x][y] == 1:
+                whiteCounter+=1
             if self.gameBoard[x][y] == 2:
                 blackCounter+=1
         return blackCounter
