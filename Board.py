@@ -1,4 +1,3 @@
-from collections import defaultdict
 from itertools import product
 
 import numpy as np
@@ -7,42 +6,38 @@ class Board:
 
     def __init__(self):
         # self.name = name
-        self.gameBoard = defaultdict(defaultdict)
+        self.gameBoard = np.zeros((8,8), dtype=np.int)
+        self.gameBoard[3, 3] = 1
+        self.gameBoard[3, 4] = 2
+        self.gameBoard[4, 3] = 2
+        self.gameBoard[4, 4] = 1
 
-    def __getitem__(self, row, column):
-        return self.gameBoard[row][column]
 
-    def __setitem__(self, row, column, value):
-        self.gameBoard[row][column] = value
+    def boardPrint(self, aesthetic):
+        if aesthetic == True:
+            nullDict = {0:'-', 1:"W", 2:'B'}
+            for x in range(8):
+                if x == 0:
+                    print('\ta\tb\tc\td\te\tf\tg\th')
+                    print(str(x+1), end="")
+                else:
+                    print("\r")
+                    print(str(x+1), end="")
+                for y in range(8):
+                    print("\t"+str(nullDict[self.gameBoard[x][y]])+" ", end="")
+            print("\n")
+        if aesthetic == False:
+            for x in range(8):
+                if x == 0:
+                    print('\t0\t1\t2\t3\t4\t5\t6\t7')
+                    print(str(x), end="")
+                else:
+                    print("\r")
+                    print(str(x), end="")
+                for y in range(8):
+                    print("\t" + str(self.gameBoard[x][y]) + " ", end="")
+            print("\n")
 
-    def initalizeBoard(self):
-        for x, y in product(range(8), range(8)):
-            self.gameBoard[x][y] = 0
-        self.gameBoard[3][3] = 1
-        self.gameBoard[3][4] = 2
-        self.gameBoard[4][3] = 2
-        self.gameBoard[4][4] = 1
-
-    def prettyPrintBoard(self):
-        print('   a  b  c  d  e  f  g  h')
-        nullDict = {0:'-', 1:"W", 2:'B'}
-        for x in range(8):
-            nullStr = ''
-            for y in range(8):
-                gamePiece = self.gameBoard[x][y]
-                nullStr += (" "+ str((nullDict[gamePiece]))+" ")
-                if y == 7:
-                    print(str(x+1) + " " + nullStr)
-
-    def uglyPrintBoard(self):
-        print('   0  1  2  3  4  5  6  7')
-        for x in range(8):
-            nullStr = ''
-            for y in range(8):
-                gamePiece = self.gameBoard[x][y]
-                nullStr += (" "+ str(gamePiece)+" ")
-                if y == 7:
-                    print(str(x) + " " + nullStr)
 
     def takeMove(self, x, y, number):
         alphaNumeric = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
@@ -69,17 +64,4 @@ class Board:
             if self.gameBoard[x][y] == 2:
                 blackCounter+=1
         return blackCounter
-
-
-
-
-
-
-
-
-
-
-
-
-
 

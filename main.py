@@ -2,10 +2,9 @@ from Board import *
 from Move import *
 from Flip import *
 
-import time
-
 
 trace = True
+aesthetic = True
 gameOver = False
 myTurn = False
 
@@ -15,11 +14,11 @@ opponentColor = None
 opponentNum = None
 
 gameBoard = Board()
-gameBoard.initalizeBoard()
-if trace:
-    gameBoard.prettyPrintBoard()
 
-#Game Begins.
+if trace:
+    gameBoard.boardPrint(aesthetic)
+
+
 colorChoice = input()
 if colorChoice == "I W":
     myColor = "W"
@@ -36,6 +35,8 @@ else:
     print("R B")
     myTurn = True
 
+
+
 while not gameOver:
     if not myTurn:
         currentAction = input()
@@ -50,7 +51,7 @@ while not gameOver:
             gameBoard.takeMove(column, row, opponentNum)
             takeFlip(gameBoard, opponentNum, column, row)
             if trace:
-                gameBoard.prettyPrintBoard()
+                gameBoard.boardPrint(aesthetic)
         myTurn = True
     if myTurn:
         nextMove = Move(myNum, opponentNum)
@@ -58,7 +59,6 @@ while not gameOver:
         if trace:
             nextMove.printMoves()
         #Forgive me.
-        startTime = time.time()
         if len(moveList) == 0:
             print(myColor)
         for move in range(len(moveList)):
@@ -67,7 +67,7 @@ while not gameOver:
                 gameBoard.broadcastMove(moveList[move][0], moveList[move][1], myColor)
                 selfFlip(gameBoard, myNum, moveList[move][0], moveList[move][1])
                 if trace:
-                    gameBoard.prettyPrintBoard()
+                    gameBoard.boardPrint(aesthetic)
                 break
         nextMove.emptyMoves()
         myTurn=False
