@@ -13,13 +13,13 @@ class Move:
 
     def moveList(self, gameBoard):
         exit = False
-        zeroIndex = 0
         for (initial_y, initial_x), element in np.ndenumerate(gameBoard.gameBoard):
             if element == self.color:
                 x = initial_x
                 y = initial_y
                 for directional_y, directional_x in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0],
                                                      [-1, 1]]:
+                    score = 0
                     while exit != True:
                         x += directional_x
                         y += directional_y
@@ -28,6 +28,7 @@ class Move:
                             y = initial_y
                             break
                         if gameBoard.gameBoard[y][x] == self.enemyColor:
+                            score+=1
                             continue
                         if gameBoard.gameBoard[y][x] == 0 and gameBoard.gameBoard[y - directional_y][
                                     x - directional_x] == 0:
@@ -35,20 +36,29 @@ class Move:
                             y = initial_y
                             break
                         if gameBoard.gameBoard[y][x] == 0 and gameBoard.gameBoard[y - directional_y][
-                                    x - directional_x] == self.enemyColor:
-                            self.possibleMoves.append([x, y, directional_x, directional_y])
+                                    x - directional_x] == self.enemyColor and score > 0:
+                            self.possibleMoves.append([x, y, directional_x, directional_y, score])
+
+        for move in self.possibleMoves:
+            x, y = move[0], move[1]
+            if gameBoard.gameBoard[y][x] != 0:
+                self.possibleMoves.remove(move)
+        # for moves in self.possibleMoves:
+        #     isIsland = True
+        #     x, y = moves[0], moves[1]
+        #     for directional_y, directional_x in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0],
+        #                                          [-1, 1]]:
+        #         if gameBoard.gameBoard[y - directional_y][x - directional_x] != 0:
+        #             isIsland = False
+        #             self.possibleMoves.remove(moves)
+        #             break
+        #     if isIsland == True:
+        #         self.possibleMoves.remove(moves)
+        # self.possibleMoves.sort(key=self.possibleMoves[5])
         return self.possibleMoves
 
-    def hook(self, gameBoard):
-        for moves in self.moveList():
-            isIsland = True
-            x, y = moves[0], moves[1]
-            for directional_y, directional_x in [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0],
-                                                 [-1, 1]]:
-                if gameBoard.gameBoard[y - directional_y][x - directional_x] != 0:
-                    isIsland = False
-                    del self.moveList[moves]
-                    break
+
+
 
     def printMoves(self):
         for x in self.possibleMoves:

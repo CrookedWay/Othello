@@ -3,7 +3,9 @@ from Move import *
 from Flip import *
 
 
-trace = True
+trace = False
+
+
 aesthetic = True
 gameOver = False
 myTurn = False
@@ -58,13 +60,12 @@ while not gameOver:
         moveList = nextMove.moveList(gameBoard)
         if trace:
             nextMove.printMoves()
-        #Forgive me.
         if len(moveList) == 0:
             print(myColor)
         for move in range(len(moveList)):
             if gameBoard.gameBoard[moveList[move][1]][moveList[move][0]] == 0:
                 gameBoard.playMove(moveList[move][0], moveList[move][1], myNum)
-                gameBoard.broadcastMove(moveList[move][0], moveList[move][1], myColor)
+                gameBoard.broadcastMove(moveList[move][0], moveList[move][1]+1, myColor)
                 selfFlip(gameBoard, myNum, moveList[move][0], moveList[move][1])
                 if trace:
                     gameBoard.boardPrint(aesthetic)
