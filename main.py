@@ -58,6 +58,7 @@ while not gameOver:
     if myTurn:
         nextMove = Move(myNum, opponentNum)
         moveList = nextMove.moveList(gameBoard)
+        moveList.sort(key=lambda x: x[4])
         if trace:
             nextMove.printMoves()
         if len(moveList) == 0:

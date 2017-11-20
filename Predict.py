@@ -39,7 +39,7 @@ def alpha(initialBoard, scoreCard, moves):
     alphaSum.sort(key=lambda x: x[2])
     for x in alphaSum:
         newGameBoard = (alphaSum[x][0][0], alphaSum[x][0][1], myNum)
-        moveList = .moveList(gameBoard)
+        moveList = moveList(gameBoard)
 
 def timer():
 

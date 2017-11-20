@@ -7,7 +7,7 @@ import itertools
 def populate():
     population = np.empty([8, 8], dtype=np.ndarray)
     for (x, y), element in np.ndenumerate(population):
-        population[x][y] = np.around(((np.random.rand(8,8))*100), 5)in
+        population[x][y] = np.around(((np.random.rand(8,8))*100), 5)
     return population
 
 def tournament(population):
