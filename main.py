@@ -3,7 +3,7 @@ from Move import *
 from Flip import *
 
 
-trace = False
+trace = True
 
 
 aesthetic = True
